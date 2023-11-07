@@ -15,5 +15,8 @@
     "lightningcss": "^1.22.0",
     "sass": "^1.69.5",
     "vite": "^4.5.0"
+  },
+  "dependencies": {
+    "eslint": "^8.53.0"
   }
 }

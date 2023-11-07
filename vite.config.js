@@ -9,6 +9,8 @@ export default defineConfig({
       input: {
         index:resolve(__dirname, 'index/index.html'),
         star: resolve(__dirname, 'star/index.html'),
+        audioCanva: resolve(__dirname, 'audioCanvas/index.html'),
+
       },
     },
     cssCodeSplit: "lightningcss"
