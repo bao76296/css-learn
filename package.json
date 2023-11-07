@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "vite", 
-    "build": "vite build", 
-    "preview": "vite preview" 
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "lightningcss": "^1.22.0",
     "sass": "^1.69.5",
     "vite": "^4.5.0"
   }

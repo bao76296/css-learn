@@ -11,6 +11,7 @@ export default defineConfig({
         star: resolve(__dirname, 'star/index.html'),
       },
     },
+    cssCodeSplit: "lightningcss"
   },
   // css: {
   //   preprocessorOptions: {

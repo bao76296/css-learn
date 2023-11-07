@@ -1,5 +1,77 @@
-.html{
-    background-color: red;
+@use "sass:math";
+
+html{
     height: 100%;
-    width: 100%;;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%,#090a0f 100%);
+    overflow: hidden;
+}
+.title{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    color: transparent;
+    font-size: 50px;
+    font-family: 'lato', sans-serif;
+    font-weight: 300;
+    letter-spacing: 10px;
+    background: linear-gradient(white,#38485a);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-align: center;
+}
+
+@function getShadows ($n){
+    $shadows: '#{random(100)}vw #{random(100)}vh #fff';
+    @for $i from 2 through $n {
+        $shadows : '#{$shadows}, #{random(100)}vw #{random(100)}vh #fff'
+    }
+    @return unquote($shadows)
+}
+
+$duration: 1000s;
+$count: 1000;
+
+@for $i from 1 through 5{
+    // floor scss 计算函数 向下取整 
+    // math.div 除方法 “/” 在sass@2.0后 预备弃用 引用 @use "sass:math";
+    $duration: floor(math.div($duration, 2));
+    $count: floor(math.div($count, 2));
+    .layer#{$i}{
+        position: fixed;
+        /*
+            scss 算计函数  random生成随机数
+            '#{random(100)}px' scss的模版字符串 类似 scss 来拼接单位
+            unquote 函数 去除双引号
+        */
+        // $size:unquote($string: '#{random(100)}px');
+        $size: #{$i}px;
+    
+        width: $size;
+        height: $size;
+        border-radius: 50%;
+        background-color: #fff;
+        // box-shadow 支持多个阴影，用来实现星空效果
+        // box-shadow: 20vw 10vh #fff,30vw 20vh #fff;
+        animation: moveup $duration linear infinite;
+        box-shadow: getShadows($count);
+    
+        // 创建一个子元素 继承父元素的属性，用来在动画滚动完成时，实现不闪屏
+        &::after{
+            content:'';
+            width: inherit;
+            height: inherit;
+            position: fixed;
+            left: 0;
+            top: 100vh;
+            box-shadow: inherit;
+            border-radius: inherit;
+        }
+    }
+}
+
+@keyframes moveup {
+    to{
+        transform: translateY(-100vh);
+    }
 }
