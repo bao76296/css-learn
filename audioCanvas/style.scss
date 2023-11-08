@@ -8,8 +8,16 @@ canvas{
     background-color: black;
     width: 100vw;
     height: 50vh;
+    display: block;
+}
+#canvas2{
+    // transform: translateY(-50%);
 }
 audio{
-    margin: 10px auto;
+    margin: 0 auto;
     display: block;
+    position: fixed;
+    inset: 0;
+    margin: auto;
+
 }

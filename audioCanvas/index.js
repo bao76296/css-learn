@@ -1,17 +1,21 @@
 const canvas = document.getElementById('canvas');
+/** @type {HTMLCanvasElement} */
+const canvas2 = document.getElementById('canvas2');
+
+/** @type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext('2d')
+
+/** @type {CanvasRenderingContext2D} */
+const ctx2 = canvas2.getContext('2d')
 const audioEle = document.getElementById('audio');
 
 function initCanvas (){
-    canvas.height = window.innerHeight/2 * devicePixelRatio;;
+    canvas.height = window.innerHeight/2 * devicePixelRatio;
     canvas.width = window.innerWidth * devicePixelRatio;
-    // const {width,height} = canvas;
-    // ctx.beginPath();
-    // ctx.fillRect(0,0,width,height)
+    canvas2.height = window.innerHeight/2 * devicePixelRatio;
+    canvas2.width = window.innerWidth * devicePixelRatio;
 }
 initCanvas();
-
-
 
 
 let isInit = false;
@@ -62,7 +66,6 @@ function draw (){
 
     // 让分析器节点分析出数据到数组
     analyser.getByteFrequencyData(dataArray)
-
     // 有一半是人耳没法听到的频率， 除2.5 降图谱拉大
     const len = dataArray.length / 2.5 ;
     ctx.fillStyle = "#78C5F7";
@@ -74,10 +77,69 @@ function draw (){
         const x2 = width/2 - (i + 1)*barWidth
         const y = height - braHeight;
         ctx.fillRect(x,y,barWidth-2, braHeight)
-
         ctx.fillRect(x2,y,barWidth-2, braHeight)
+        ctx.save();
+        ctx.fillStyle = "red";
+        // if(data !== 0){
+        //     ctx.fillRect(x, y -50, barWidth-2, 5)
+        //     ctx.fillRect(x2, y -50, barWidth-2, 5)
+        // }
+        ctx.restore();
     }
+    dataArray && drawCircle(dataArray)
 }
-console.log(dataArray)
 
 draw()
+
+const drawCircle = (dataArray)=>{
+    const {width,height} = canvas2;
+        ctx2.save();
+
+    ctx2.clearRect(0,0,width,height)
+     
+
+    const centerX = width / 2;
+    const centerY = height / 2;
+    ctx2.translate(centerX, centerY);
+
+    const radius = height / 5;
+    ctx2.strokeStyle="#78C5F7";
+    ctx2.beginPath();
+    
+    ctx2.arc(0, 0, height / 5, 0, 2 * Math.PI)
+    ctx2.stroke();
+    //--- 
+    ctx2.fillStyle = "#78C5F7";
+
+    const len = dataArray.length / 2.5 ;
+    const arcWidth = 2 * Math.PI *  radius;
+    const barWidth = arcWidth / len /2 ; //条的宽度; /2画出兑成
+    for(let i =0;i<len;i++){
+        // ctx2.save();
+        const data = dataArray[i] // <256;
+
+        const angleDegrees = 360/(len-1) ;
+
+        const angleRadians = degreesToRadians(angleDegrees);
+
+       
+        const x =  0// radius * Math.cos(angleRadians);
+
+        const y =   radius// * Math.sin(angleRadians);
+
+        // console.log(x,y)
+        const braHeight = data / 255 *(centerY  -  radius) ;
+
+        ctx2.fillRect(x, y, barWidth-2, braHeight );
+        ctx2.rotate(angleRadians);
+        // ctx2.restore();
+    }
+    ctx2.restore();
+
+}
+
+function degreesToRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}
+
+// drawCircle(dataArray)
